@@ -1,0 +1,25 @@
+trigger:
+  branches:
+    include:
+      - main  
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '18.x'
+    displayName: 'Instala Node.js 18'
+
+  - script: |
+      cd frontend
+      npm install
+      npm run build
+    displayName: 'Build del Frontend'
+
+  - script: |
+      cd bff
+      npm install
+      npm run build || echo "No hay build script para BFF"
+    displayName: 'Build del Backend For Frontend'
